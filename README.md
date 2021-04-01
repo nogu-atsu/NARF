@@ -1,5 +1,6 @@
 # NARF
 Neural Articulated Radiance Field
+
 Atsuhiro Noguchi, Xiao Sun, Stephen Lin, Tatsuya Harada
 
 [Paper]()
