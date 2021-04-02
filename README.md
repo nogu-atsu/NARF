@@ -33,6 +33,6 @@ Furthermore, NARF can also render segmentation for each part.
   author    = {....},
   title     = {Neural Articulated Radiance Field},
   journal   = {arXiv preprint arXiv:????.?????},
-  year      = {2020},
+  year      = {2021},
 }
 ```
