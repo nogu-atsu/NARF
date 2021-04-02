@@ -10,6 +10,7 @@ We present Neural Articulated Radiance Field (NARF), a novel deformable 3D repre
 
 ## Results
 The proposed NARF is capable of rendering images from arbitrary viewpoints and postures.
+
 Viewpoint change (seen in training)
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_camera_arf.mp4.mp4.gif" width="640px">
