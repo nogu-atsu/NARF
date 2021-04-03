@@ -26,7 +26,7 @@ Bone length change (unseen in training)
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_bone_arf.mp4.mp4.gif" width="640px">
 
-Viewpont extrapolation (unseen in training)
+Viewpoint extrapolation (unseen in training)
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_camera_ood_arf.mp4.mp4.gif" width="640px">
 
