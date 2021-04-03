@@ -31,6 +31,11 @@ Furthermore, NARF can also render segmentation for each part.
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_camera_arf_segmentation.mp4.mp4.gif" width="640px">
 
+NARF can learn appearance variations by combining with autoencoder. (dummy video)
+
+<img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_camera_arf_segmentation.mp4.mp4.gif" width="640px">
+
+
 ## BibTex
 ```
 @article{2021narf
