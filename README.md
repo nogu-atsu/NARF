@@ -19,7 +19,7 @@ Pose change (unseen in training)
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_pose_arf.mp4.gif" width="640px">
 
-Bone parameter change (unseen in training)
+Bone length change (unseen in training)
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_bone_arf.mp4.mp4.gif" width="640px">
 
