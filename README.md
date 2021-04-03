@@ -30,7 +30,7 @@ Furthermore, NARF can also render segmentation for each part.
 ## BibTex
 ```
 @article{2021narf
-  author    = {....},
+  author    = {Noguchi, Atsuhiro and Sun, Xiao and Lin, Stephen and Tatsuya, Harada},
   title     = {Neural Articulated Radiance Field},
   journal   = {arXiv preprint arXiv:????.?????},
   year      = {2021},
