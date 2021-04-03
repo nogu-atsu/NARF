@@ -19,7 +19,7 @@ Pose change (unseen in training)
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_pose_arf.mp4.gif" width="640px">
 
-Viewpoint change (unseen in training)
+Viewpont extrapolation (unseen in training)
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_camera_ood_arf.mp4.mp4.gif" width="640px">
 
