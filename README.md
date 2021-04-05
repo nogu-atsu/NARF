@@ -25,7 +25,7 @@ An overview of the model is shown in the figure.
 ![overview](https://github.com/nogu-atsu/NARF/wiki/images/overview.jpg)
 
 ## Results
-The proposed NARF is capable of rendering images from arbitrary viewpoints and postures.
+The proposed NARF is capable of rendering images with explicit control of the viwepoint, bone pose, and bone parameters. These representations are disentangled and can be controlled independently.
 
 Viewpoint change (seen in training)
 
@@ -39,11 +39,11 @@ Bone length change (unseen in training)
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_bone_arf.mp4.mp4.gif" width="640px">
 
-Viewpoint extrapolation (unseen in training)
+NARF generalizes well to unseen viewpoints during training.
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_camera_ood_arf.mp4.mp4.gif" width="640px">
 
-Furthermore, NARF can also render segmentation for each part.
+Furthermore, NARF can render segmentation for each part by visualizing the output values of the selector.
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_camera_arf_segmentation.mp4.mp4.gif" width="640px">
 
