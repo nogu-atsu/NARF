@@ -3,7 +3,7 @@ Neural Articulated Radiance Field
 
 Atsuhiro Noguchi, Xiao Sun, Stephen Lin, Tatsuya Harada
 
-[[Paper]]() [[Code]](https://github.com/nogu-atsu/NARF/tree/main/src)
+[[Paper]](https://arxiv.org/abs/2104.03110) [[Code]](https://github.com/nogu-atsu/NARF/tree/main/src)
 
 ## Abstract
 We present Neural Articulated Radiance Field (NARF), a novel deformable 3D representation for articulated objects learned from images. 
@@ -58,7 +58,7 @@ The video below visualizes the disentangled representations and segmentation mas
 @article{2021narf
   author    = {Noguchi, Atsuhiro and Sun, Xiao and Lin, Stephen and Tatsuya, Harada},
   title     = {Neural Articulated Radiance Field},
-  journal   = {arXiv preprint arXiv:????.?????},
+  journal   = {arXiv preprint arXiv:2104.03110},
   year      = {2021},
 }
 ```
