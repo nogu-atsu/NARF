@@ -25,7 +25,7 @@ An overview of the model is shown in the figure.
 ![overview](https://github.com/nogu-atsu/NARF/wiki/images/overview.jpg)
 
 ## Results
-The proposed NARF is capable of rendering images with explicit control of the viwepoint, bone pose, and bone parameters. These representations are disentangled and can be controlled independently.
+The proposed NARF is capable of rendering images with explicit control of the viewpoint, bone pose, and bone parameters. These representations are disentangled and can be controlled independently.
 
 Viewpoint change (seen in training)
 
@@ -47,7 +47,7 @@ Furthermore, NARF can render segmentation for each part by visualizing the outpu
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/concat_inter_camera_arf_segmentation.mp4.mp4.gif" width="640px">
 
-NARF can learn appearance variations by combining with autoencoder. 
+NARF can learn appearance variations by combining it with an autoencoder. 
 The video below visualizes the disentangled representations and segmentation masks learned by NARF autoencoder.
 
 <img src="https://github.com/nogu-atsu/NARF/wiki/images/ae_results.mp4.gif" width="1024px">
