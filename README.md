@@ -60,7 +60,7 @@ The video below visualizes the disentangled representations and segmentation mas
 @inproceedings{2021narf
   author    = {Noguchi, Atsuhiro and Sun, Xiao and Lin, Stephen and Harada, Tatsuya},
   title     = {Neural Articulated Radiance Field},
-  booktitle   = {International Conference on Computer Vision},
+  booktitle = {International Conference on Computer Vision},
   year      = {2021},
 }
 ```
