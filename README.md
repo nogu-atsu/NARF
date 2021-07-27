@@ -26,7 +26,7 @@ An overview of the model is shown in the figure.
 
 ![overview](https://github.com/nogu-atsu/NARF/wiki/images/overview.jpg)
 
-The model is trained using the L2 loss between the generated image and the ground truth image.
+The model is trained with the L2 loss between the generated image and the ground truth image.
 
 ## Results
 The proposed NARF is capable of rendering images with explicit control of the viewpoint, bone pose, and bone parameters. These representations are disentangled and can be controlled independently.
