@@ -5,7 +5,7 @@
 > Atsuhiro Noguchi, Xiao Sun, Stephen Lin, Tatsuya Harada  
 > ICCV 2021  
 
-[[Paper]](https://arxiv.org/abs/2104.03110) [[Code]](https://github.com/nogu-atsu/NARF/tree/main/src)
+[[Paper]](https://arxiv.org/abs/2104.03110) [[Code (released in October)]](https://github.com/nogu-atsu/NARF/tree/main/src)
 
 ## Abstract
 We present Neural Articulated Radiance Field (NARF), a novel deformable 3D representation for articulated objects learned from images. 
