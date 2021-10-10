@@ -28,11 +28,13 @@
 """Runtime Configuration"""
 
 from __future__ import print_function, absolute_import, division
+
+import os
+
 import numpy as np
-import math
 
 # directories
-dataset_dir = '/home/acc12675ut/data/dataset/THUman/dataset/'  # all person
+dataset_dir = '/home/acc12675ut/data/dataset/THUman/dataset/'
 # dataset_dir = './dataset'
 # output_dir = '../../../../data/THUman_test'
 bg_dir = './bg_img'  # background image directory
@@ -124,27 +126,34 @@ corner_size = 0.01
 # novel_view = True
 # autoencoder = True
 
-# # one person 512
-# render_img_w = 512
-# render_img_h = 512
-# output_dir = '/home/acc12675ut/data/dataset/THUman/single_person/render_512'  # single person
+# # one person release test
+# output_dir = '/home/acc12675ut/data/dataset/THUman/release_test/render_128'  # single person
 # data_list_fname = '/home/acc12675ut/data/dataset/THUman/single_person/data_list.txt'
-# num_render_per_obj = 10  # single person
+# num_render_per_obj = 100  # single person
 # random_lighting = False
 # novel_view = False
 
-# # one person novel view 512
-# render_img_w = 512
-# render_img_h = 512
-# output_dir = '/home/acc12675ut/data/dataset/THUman/single_person_novel_view/render_512'  # single person
+# # one person same view test
+# output_dir = '/home/acc12675ut/data/dataset/THUman/release_test_test/render_128'  # single person
 # data_list_fname = '/home/acc12675ut/data/dataset/THUman/single_person/data_list.txt'
-# num_render_per_obj = 10  # single person
+# num_render_per_obj = 20  # single person
 # random_lighting = False
+# novel_view = False
+
+# one person novel view
+# output_dir = '/home/acc12675ut/data/dataset/THUman/release_test_novel_view_test/render_128'  # single person
+data_list_fname = '/home/acc12675ut/data/dataset/THUman/single_person/data_list.txt'
+# num_render_per_obj = 20  # single person
+random_lighting = False
 # novel_view = True
 
-# one person release test
-output_dir = '/home/acc12675ut/data/dataset/THUman/release_test/render_128'  # single person
-data_list_fname = '/home/acc12675ut/data/dataset/THUman/single_person/data_list.txt'
-num_render_per_obj = 100  # single person
-random_lighting = False
-novel_view = False
+output_root_dir = '/home/acc12675ut/data/dataset/THUman/release'
+
+render_setting = {
+    "train": {"output_dir": os.path.join(output_root_dir, "train", "render_" + str(render_img_w)),
+              "num_render_per_obj": 100, "novel_view": False},
+    "same_view": {"output_dir": os.path.join(output_root_dir, "same_view", "render_" + str(render_img_w)),
+                  "num_render_per_obj": 20, "novel_view": False},
+    "novel_view": {"output_dir": os.path.join(output_root_dir, "novel_view", "render_" + str(render_img_w)),
+                   "num_render_per_obj": 20, "novel_view": True},
+}

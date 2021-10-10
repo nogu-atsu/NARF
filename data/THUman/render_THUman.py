@@ -26,7 +26,8 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from __future__ import print_function, absolute_import, division
-
+import argparse
+import imp
 import copy
 import os
 import sys
@@ -36,7 +37,6 @@ import chumpy as ch
 import cv2 as cv
 import numpy as np
 
-import config as conf
 import renderers as rd
 import util
 from ObjIO import load_obj_data
@@ -153,26 +153,6 @@ def axis_transformation(mesh, bone_pose, axis_transformation):
     return mesh, bone_pose
 
 
-# def save_model_for_voxelization(mesh, smpl, min_corner, max_corner,
-#                                 output_dir, data_idx):
-#     """saves model to an .obj file for voxelization"""
-#     # create new dictionaries to remove useless info
-#     mesh_ = dict()
-#     mesh_['v'] = np.copy(mesh['v'])
-#     mesh_['f'] = np.copy(mesh['f'])
-#     smpl_ = dict()
-#     smpl_['v'] = np.copy(smpl['v'])
-#     smpl_['f'] = np.copy(smpl['f'])
-#
-#     # save models for voxelization
-#     m_path = '%s/mesh_smpl/mesh_%08d.obj' % (output_dir, data_idx * 4)
-#     s_path = '%s/mesh_smpl/smpl_%08d.obj' % (output_dir, data_idx * 4)
-#     save_obj_data_binary_with_corner(mesh_, min_corner, max_corner,
-#                                      conf.corner_size, m_path)
-#     save_obj_data_binary_with_corner(smpl, min_corner, max_corner,
-#                                      conf.corner_size, s_path)
-
-
 def transform_model_randomly(mesh, bone_pose):
     """translates the model to the origin, and rotates it randomly"""
     # random rotation
@@ -226,7 +206,8 @@ def save_rendered_data(img, pose_on_image, output_dir, img_idx, pose_to_camera, 
 
 
 class Render:
-    def __init__(self, random_lighting=True):
+    def __init__(self, dataset_type, random_lighting=True):
+        self.render_setting = conf.render_setting[dataset_type]
         self.random_lighting = random_lighting
         if not random_lighting:
             self.vl_pos, self.vl_clr = util.sample_verticle_lighting(3, random=False)
@@ -252,13 +233,13 @@ class Render:
     def __call__(self, args):
         np.random.seed()
         di, data_item = args
-        print(di)
+        print("Processing data #", di)
         render_img_w = conf.render_img_w
         render_img_h = conf.render_img_h
         dataset_dir = conf.dataset_dir
-        num_render_per_obj = conf.num_render_per_obj
-        output_dir = conf.output_dir
-        novel_view = conf.novel_view
+        num_render_per_obj = self.render_setting["num_render_per_obj"]
+        output_dir = self.render_setting["output_dir"]
+        novel_view = self.render_setting["novel_view"]
 
         # preprocess 3D models
         mesh = load_models(dataset_dir, data_item)
@@ -313,8 +294,8 @@ class Render:
                 save_rendered_data(img, pose_on_image, output_dir_view2, img_ind, pose_to_camera, bone_pose_)
 
 
-def main():
-    output_dir = conf.output_dir
+def render_data(dataset_type):
+    output_dir = conf.render_setting[dataset_type]["output_dir"]
     data_list_fname = conf.data_list_fname
     random_lighting = conf.random_lighting
 
@@ -326,7 +307,7 @@ def main():
 
     data_list = load_data_list(data_list_fname)
 
-    render = Render(random_lighting=random_lighting)
+    render = Render(dataset_type, random_lighting=random_lighting)
     # # if single process
     # for di, data_item in enumerate(data_list):
     #     render((di, data_item))
@@ -341,5 +322,15 @@ def main():
         sys.exit(1)
 
 
+def main():
+    for dataset_type in ["train", "same_view", "novel_view"]:
+        render_data(dataset_type)
+
+
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Preprocess THUman dataset')
+    parser.add_argument('--config_path', type=str, required=True)
+    args = parser.parse_args()
+
+    conf = imp.load_source('module.name', args.config_path)
     main()
