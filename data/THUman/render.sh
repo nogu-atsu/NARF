@@ -20,4 +20,4 @@ PYTHONUTF8=1
 cd /home/acc12675ut/D1/NARF_release/data/THUman
 pyenv shell miniconda2-4.7.12
 
-python render_THUman.py --config_path /home/acc12675ut/D1/NARF_release/data/THUman/config.py
+python render_THUman.py --config_path configs/results_wxl_20181008_wlz_3_M.py
