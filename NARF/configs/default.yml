@@ -2,7 +2,6 @@ out_root: path_to_your_output_root # <- need change
 out: output_directory # <- need change
 
 dataset:
-  data_root: # for old type config
   name: human
   bs: 4  # batchsize
   image_size: 128
@@ -16,7 +15,7 @@ dataset:
     n_imgs_per_mesh: 100
   val:
     same_dist:
-      train: False
+      train: True
       data_root:   # <- need change
       n_mesh: 30
       n_rendered_per_mesh: 100
@@ -28,7 +27,7 @@ dataset:
       n_rendered_per_mesh: 100
       n_imgs_per_mesh: 10
     novel_view:
-      train: False
+      train: True
       data_root:  # <- need change
       n_mesh: 30
       n_rendered_per_mesh: 20

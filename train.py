@@ -19,23 +19,22 @@ from NARF.utils import record_setting, yaml_config, write
 from NARF.visualization_utils import save_img, ssim, psnr
 
 
-def train(config, validation=False, ae_test=False):
+def train(config, validation=False):
     if validation:
-        dataset, data_loader = create_dataloader(config.dataset, novel_pose_novel_view=True, ae_test=ae_test)
+        dataset, data_loader = create_dataloader(config.dataset)
         validation_func(config, dataset, data_loader, rank=0, ddp=False)
     else:
         dataset, data_loader = create_dataloader(config.dataset)
         train_func(config, dataset, data_loader, rank=0, ddp=False)
 
 
-def create_dataloader(config_dataset, novel_pose_novel_view=False, ae_test=False):
+def create_dataloader(config_dataset):
     batch_size = config_dataset.bs
     shuffle = True
     drop_last = True
     num_workers = config_dataset.num_workers
 
-    dataset_train, datasets_val = create_dataset(config_dataset, novel_pose_novel_view=novel_pose_novel_view,
-                                                 ae_test=ae_test)
+    dataset_train, datasets_val = create_dataset(config_dataset)
     train_loader = DataLoader(dataset_train, batch_size=batch_size, num_workers=num_workers, shuffle=shuffle,
                               drop_last=drop_last)
     val_loaders = {key: DataLoader(datasets_val[key], batch_size=1, num_workers=num_workers, shuffle=False,
@@ -47,44 +46,12 @@ def cache_dataset(config_dataset):
     create_dataset(config_dataset, just_cache=True)
 
 
-def create_dataset(config_dataset, just_cache=False, novel_pose_novel_view=False,
-                   ae_test=False):  # novel_pose_novel_view is temprary
-    # TODO: config.dataset
-    # TODO: move more args to config
+def create_dataset(config_dataset, just_cache=False):  # novel_pose_novel_view is temprary
     size = config_dataset.image_size
     dataset_name = config_dataset.name
-    if ae_test:
-        from easydict import EasyDict as edict
-        ae_config = yaml_config("configs/supervised_part_wise_NeRF/THUman/THUman_ae_test.yml",
-                                "configs/supervised_part_wise_NeRF/default.yml")
-        train_dataset_config = ae_config.dataset.train
-        val_dataset_config = ae_config.dataset.val
 
-
-    elif config_dataset.data_root is not None:
-        from easydict import EasyDict as edict
-        train_dataset_config = edict({"data_root": config_dataset.data_root,
-                                      "train": True,
-                                      "n_mesh": 50,
-                                      "n_rendered_per_mesh": 100,
-                                      "n_imgs_per_mesh": 100})
-        val_dataset_config = edict({"novel_pose": {"data_root": config_dataset.data_root,
-                                                   "train": False,
-                                                   "n_mesh": 6,
-                                                   "n_rendered_per_mesh": 100,
-                                                   "n_imgs_per_mesh": 20}})
-    elif novel_pose_novel_view:
-        from easydict import EasyDict as edict
-        train_dataset_config = config_dataset.train
-        val_dataset_config = edict({"novel_pose_novel_view": {
-            "data_root": config_dataset.val.novel_view.data_root,
-            "train": False,
-            "n_mesh": config_dataset.val.novel_pose.n_mesh,
-            "n_rendered_per_mesh": 20,
-            "n_imgs_per_mesh": 20}})
-    else:
-        train_dataset_config = config_dataset.train
-        val_dataset_config = config_dataset.val
+    train_dataset_config = config_dataset.train
+    val_dataset_config = config_dataset.val
 
     print("loading datasets")
     if dataset_name == "human":
@@ -125,9 +92,9 @@ def validate(gen, val_loaders, config, ddp=False, metric=["SSIM", "PSNR"]):
         val_dataset_config = config.dataset.val
         for key in val_dataset_config.keys():
             if val_dataset_config[key].data_root is not None:
-                if val_dataset_config[key].data_root.split("/")[-1] == "all_person_novel_view_test":
+                if val_dataset_config[key].data_root.split("/")[-1] == "novel_view":
                     dataset = copy.deepcopy(val_dataset_config[key])
-                    dataset["data_root"] = "/home/acc12675ut/data/dataset/THUman/all_person_novel_view_test_view2"
+                    dataset["data_root"] = val_dataset_config[key].data_root + "_view2"
                     datasets_val[key] = THUmanDataset(dataset, size=size, return_bone_params=False,
                                                       return_bone_mask=False, random_background=False,
                                                       num_repeat_in_epoch=1, just_cache=False,
@@ -156,18 +123,13 @@ def validate(gen, val_loaders, config, ddp=False, metric=["SSIM", "PSNR"]):
                     part_bone_disparity = batch["part_bone_disparity"]
                     keypoint_mask = batch["keypoint_mask"]
 
-                if "inv_intrinsics" in batch:
-                    inv_intrinsics = batch["inv_intrinsics"]
-                else:
-                    inv_intrinsics = None
+                inv_intrinsics = batch.get("inv_intrinsics")
 
                 if "pose_to_world" in batch:
                     pose_to_camera = batch["pose_to_camera"]
                     pose_to_world = batch["pose_to_world"]
-                    if "bone_length" in batch:
-                        bone_length = batch["bone_length"]
-                    else:
-                        bone_length = None
+
+                    bone_length = batch.get("bone_length")
 
                 if auto_encoder:
                     if key in datasets_val:
@@ -501,9 +463,8 @@ if __name__ == "__main__":
     parser.add_argument('--resume_latest', action="store_true")
     parser.add_argument('--num_workers', type=int, default=1)
     parser.add_argument('--validation', action="store_true")
-    parser.add_argument('--ae_test', action="store_true")
     args = parser.parse_args()
 
     config = yaml_config(args.config, args.default_config, args.resume_latest, args.num_workers)
 
-    train(config, args.validation, ae_test=args.ae_test)
+    train(config, args.validation)
