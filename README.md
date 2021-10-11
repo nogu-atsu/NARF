@@ -65,38 +65,29 @@ pip install tensorboardx pyyaml opencv-python pandas ninja easydict tqdm scipy s
 ```
 
 ## Dataset preparation
-Dataset preparation code is based on https://github.com/ZhengZerong/DeepHuman
-
-- Download THUman dataset from https://github.com/ZhengZerong/DeepHuman/tree/master/THUmanDataset and unzip it.
-- Specify the path to `dataset_dir` in config.py
-- update `data_list.txt` if necessary 
-- Specify the path to save the data to `output_dir`
-- Run `python render_THUman.py`
+Please refer to https://github.com/nogu-atsu/NARF_release/tree/master/data/THUman
 
 ## Training
-- Write config file like `configs/supervised_part_wise_NeRF/default.yml`. Do not change `default.yml`
+- Write config file like `NARF/configs/THUman/results_wxl_20181008_wlz_3_M/NARF_D.yml`. Do not change `default.yml`
     - `out_root`: root directory of output
     - `out`: output directory name
     - `data_root`: directory the `dataset` is in
     - `dataset`: dataset name without `-with-param`. e.g. `hand2-single-color`
 - Run training specifying config file
 
-    ```CUDA_VISIBLE_DEVICES=0 python train_part_wise_NeRF_supervised.py --config configs/supervised_part_wise_NeRF/your_config.yml --num_workers 1```
+    ```CUDA_VISIBLE_DEVICES=0 python train.py --config NARF/configs/your_config.yml --num_workers 1```
     - With default config, 20 GB GPU memory is necessary
     - Please reduce `bs` or `num_rays` to reduce memory requirements
 - DDP training 
     
-    ```python train_part_wise_NeRF_supervised_ddp.py --config configs/supervised_part_wise_NeRF/your_config.yml --gpus 4 --num_workers 1```
-- visualization
-
-    `visualize/part_based_nerf.ipynb`
+    ```python train_ddp.py --config configs/your_config.yml --gpus 4 --num_workers 1```
 
 
 ## Visualize results
 
 - Random sampling
     ```
-    python NARF_random_image.py --config ../configs/unsupervised_dual_learning/THUman/20210204_generator_nerf_replace_dim160.yml
+    python NARF_random_image.py --config ../configs/[your_config].yml
     ```
   The results are saved to the same directory as the snapshots
 
