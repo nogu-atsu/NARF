@@ -26,3 +26,26 @@ Dataset preparation code is based on https://github.com/ZhengZerong/DeepHuman
   - Female data used in the paper
 - results_wxl_20181008_wlz_3_M
   - Male data used in the paper
+
+
+## Acknowledgement
+```
+@InProceedings{Zheng2019DeepHuman, 
+    author = {Zheng, Zerong and Yu, Tao and Wei, Yixuan and Dai, Qionghai and Liu, Yebin},
+    title = {DeepHuman: 3D Human Reconstruction From a Single Image},
+    booktitle = {The IEEE International Conference on Computer Vision (ICCV)},
+    month = {October},
+    year = {2019}
+}
+@article{SMPL:2015,
+      author = {Loper, Matthew and Mahmood, Naureen and Romero, Javier and Pons-Moll, Gerard and Black, Michael J.},
+      title = {{SMPL}: A Skinned Multi-Person Linear Model},
+      journal = {ACM Trans. Graphics (Proc. SIGGRAPH Asia)},
+      month = oct,
+      number = {6},
+      pages = {248:1--248:16},
+      publisher = {ACM},
+      volume = {34},
+      year = {2015}
+    }
+```
