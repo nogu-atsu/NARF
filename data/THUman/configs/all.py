@@ -35,8 +35,8 @@ import numpy as np
 
 # path
 dataset_dir = '/home/acc12675ut/data/dataset/THUman/dataset/'
-output_root_dir = '/home/acc12675ut/data/dataset/THUman/results_wxl_20181008_wlz_3_M'
-data_list_fname = 'dataset/results_wxl_20181008_wlz_3_M/data_list.txt'
+output_root_dir = '/home/acc12675ut/data/dataset/THUman/all'
+data_list_fname = 'dataset/all/data_list.txt'
 
 # axes along which flipping is applied
 axis_transformation = np.array([1, -1, -1])  # which axis(axes) to flip
@@ -51,12 +51,15 @@ corner_size = 0.01
 # use random lighting
 random_lighting = False
 
+# data for autoencoder
+autoencoder = True
+
 # rendering setting
 render_setting = {
     "train": {"output_dir": os.path.join(output_root_dir, "train", "render_" + str(render_img_w)),
-              "num_render_per_obj": 100, "novel_view": False},
+              "num_render_per_obj": 10, "novel_view": False},
     "same_view": {"output_dir": os.path.join(output_root_dir, "same_view", "render_" + str(render_img_w)),
-                  "num_render_per_obj": 20, "novel_view": False},
+                  "num_render_per_obj": 1, "novel_view": False},
     "novel_view": {"output_dir": os.path.join(output_root_dir, "novel_view", "render_" + str(render_img_w)),
-                   "num_render_per_obj": 20, "novel_view": True},
+                   "num_render_per_obj": 1, "novel_view": True},
 }

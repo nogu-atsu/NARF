@@ -35,8 +35,8 @@ import numpy as np
 
 # path
 dataset_dir = '/home/acc12675ut/data/dataset/THUman/dataset/'
-output_root_dir = '/home/acc12675ut/data/dataset/THUman/results_wxl_20181008_wlz_3_M'
-data_list_fname = 'dataset/results_wxl_20181008_wlz_3_M/data_list.txt'
+output_root_dir = '/home/acc12675ut/data/dataset/THUman/results_gyx_20181017_lst_1_F'
+data_list_fname = 'dataset/results_gyx_20181017_lst_1_F/data_list.txt'
 
 # axes along which flipping is applied
 axis_transformation = np.array([1, -1, -1])  # which axis(axes) to flip
