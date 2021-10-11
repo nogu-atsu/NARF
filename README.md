@@ -59,8 +59,9 @@ The video below visualizes the disentangled representations and segmentation mas
 # Code
 ## Envirionment
 python 3.7.*
+pytorch >= 1.7.1
+torchvision >= 0.8.2
 ```
-pip install torch==1.7.1+cu101 torchvision==0.8.2+cu101 -f https://download.pytorch.org/whl/torch_stable.html
 pip install tensorboardx pyyaml opencv-python pandas ninja easydict tqdm scipy scikit-image
 ```
 
@@ -69,15 +70,16 @@ Please refer to https://github.com/nogu-atsu/NARF_release/tree/master/data/THUma
 
 ## Training
 - Write config file like `NARF/configs/THUman/results_wxl_20181008_wlz_3_M/NARF_D.yml`. Do not change `default.yml`
-    - `out_root`: root directory of output
-    - `out`: output directory name
+    - `out_root`: root directory to save models
+    - `out`: experiment name
     - `data_root`: directory the `dataset` is in
-    - `dataset`: dataset name without `-with-param`. e.g. `hand2-single-color`
 - Run training specifying config file
     ```CUDA_VISIBLE_DEVICES=0 python train.py --config NARF/configs/your_config.yml --num_workers 1```
 - DDP training
     ```python train_ddp.py --config NARF/configs/your_config.yml --gpus 4 --num_workers 1```
 
+## Validation
+```python train.py --config NARF/configs/your_config.yml --num_workers 1 --validation```
 
 ## Visualize results
 
