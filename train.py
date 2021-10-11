@@ -458,8 +458,8 @@ def validation_func(config, dataset, data_loader, rank, ddp=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', type=str, default="NARF/configs/release/default.yml")
-    parser.add_argument('--default_config', type=str, default="NARF/configs/release/default.yml")
+    parser.add_argument('--config', type=str, default="NARF/configs/default.yml")
+    parser.add_argument('--default_config', type=str, default="NARF/configs/default.yml")
     parser.add_argument('--resume_latest', action="store_true")
     parser.add_argument('--num_workers', type=int, default=1)
     parser.add_argument('--validation', action="store_true")
