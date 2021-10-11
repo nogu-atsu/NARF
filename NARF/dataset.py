@@ -49,7 +49,7 @@ class THUmanDataset(Dataset):
                    np.arange(self.n_mesh * self.n_imgs_per_mesh) // self.n_imgs_per_mesh * self.n_rendered_per_mesh
 
         if not self.train:
-            data_idx = -1 - data_idx  # reverse order
+            data_idx = -1 - data_idx  # reversed order
         self.data_idx = data_idx
 
         self.imgs = self.imgs[data_idx]
@@ -220,7 +220,7 @@ class THUmanDataset(Dataset):
 
 
 class BlenderDataset(THUmanDataset):
-    """Blender dataset"""  # TODO THUmanと共通化
+    """Blender dataset"""
 
     def __init__(self, config, size=200, random_background=False, return_bone_params=False,
                  num_repeat_in_epoch=100, just_cache=False):
@@ -554,7 +554,7 @@ class THUmanPoseDataset(Dataset):
                 #     [scale_some_parts(mat, factor=0.9 / 1.2 * i / (num_pose - 1) + 1.8 / 1.2 * (1 - i / (num_pose - 1)))
                 #      for i, mat in enumerate(joint_mat_world)])  # num_pose x 24 x 4 x 4
 
-                # git repo
+                # git repo visualization
                 start_factor = np.random.uniform(1, 1.5, num_parts - 1)
                 end_factor = np.random.uniform(1, 1.5, num_parts - 1)
                 factor = np.linspace(start_factor, end_factor, num_pose)

@@ -74,13 +74,9 @@ Please refer to https://github.com/nogu-atsu/NARF_release/tree/master/data/THUma
     - `data_root`: directory the `dataset` is in
     - `dataset`: dataset name without `-with-param`. e.g. `hand2-single-color`
 - Run training specifying config file
-
     ```CUDA_VISIBLE_DEVICES=0 python train.py --config NARF/configs/your_config.yml --num_workers 1```
-    - With default config, 20 GB GPU memory is necessary
-    - Please reduce `bs` or `num_rays` to reduce memory requirements
-- DDP training 
-    
-    ```python train_ddp.py --config configs/your_config.yml --gpus 4 --num_workers 1```
+- DDP training
+    ```python train_ddp.py --config NARF/configs/your_config.yml --gpus 4 --num_workers 1```
 
 
 ## Visualize results

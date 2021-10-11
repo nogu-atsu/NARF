@@ -46,7 +46,7 @@ def cache_dataset(config_dataset):
     create_dataset(config_dataset, just_cache=True)
 
 
-def create_dataset(config_dataset, just_cache=False):  # novel_pose_novel_view is temprary
+def create_dataset(config_dataset, just_cache=False):
     size = config_dataset.image_size
     dataset_name = config_dataset.name
 
@@ -408,25 +408,25 @@ def validation_func(config, dataset, data_loader, rank, ddp=False):
     intrinsics = dataset.intrinsics
 
     if config.auto_encoder:
-        if not cnn_based:
-            gen = NeRFAutoEncoder(config.generator_params, size, intrinsics, num_bone, ch=32,
-                                  parent_id=dataset.output_parents)
-        else:
+        if cnn_based:
             gen = Generator(config.generator_params,
                             in_dim=dataset.num_bone + dataset.num_valid_keypoints + 3,
                             num_bone=dataset.num_bone, ch=32, size=size,
                             intrinsics=dataset.cp.intrinsics, rgb=True, auto_encoder=True,
                             parent_id=dataset.output_parents)
-    elif not cnn_based:
-        gen = NeRFGenerator(config.generator_params, size, intrinsics, num_bone,
-                            ray_sampler=random_ray_sampler,
-                            parent_id=dataset.output_parents)
-    else:
+        else:
+            gen = NeRFAutoEncoder(config.generator_params, size, intrinsics, num_bone, ch=32,
+                                  parent_id=dataset.output_parents)
+    elif cnn_based:
         gen = Generator(config.generator_params,
                         in_dim=dataset.num_bone + dataset.num_valid_keypoints + 3,
                         num_bone=dataset.num_bone, ch=32, size=size,
                         intrinsics=dataset.cp.intrinsics, rgb=True,
                         parent_id=dataset.output_parents)
+    else:
+        gen = NeRFGenerator(config.generator_params, size, intrinsics, num_bone,
+                            ray_sampler=random_ray_sampler,
+                            parent_id=dataset.output_parents)
 
     torch.cuda.set_device(rank)
     gen.cuda(rank)
