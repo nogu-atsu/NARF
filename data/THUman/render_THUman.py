@@ -308,18 +308,18 @@ def render_data(dataset_type):
     data_list = load_data_list(data_list_fname)
 
     render = Render(dataset_type, random_lighting=random_lighting)
-    # # if single process
-    # for di, data_item in enumerate(data_list):
-    #     render((di, data_item))
+    if args.num_process == 1:  # if single process
+        for di, data_item in enumerate(data_list):
+            render((di, data_item))
 
-    # if multi process
-    pool = Pool(20)
-    try:
-        pool.map_async(render, list(enumerate(data_list))).get(9999999)
-    except KeyboardInterrupt:
-        pool.terminate()
-        print('KeyboardInterrupt!')
-        sys.exit(1)
+    else:  # if multi process
+        pool = Pool(args.num_process)
+        try:
+            pool.map_async(render, list(enumerate(data_list))).get(9999999)
+        except KeyboardInterrupt:
+            pool.terminate()
+            print('KeyboardInterrupt!')
+            sys.exit(1)
 
 
 def main():
@@ -330,6 +330,7 @@ def main():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess THUman dataset')
     parser.add_argument('--config_path', type=str, required=True)
+    parser.add_argument('--num_process', type=int, default=20)
     args = parser.parse_args()
 
     conf = imp.load_source('module.name', args.config_path)

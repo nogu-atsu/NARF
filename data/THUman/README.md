@@ -17,7 +17,7 @@ Dataset preparation code is based on https://github.com/ZhengZerong/DeepHuman
     - Specify the path to `dataset_dir` in config files `configs/*.py`
 - update `data_list.txt` in `dataset` if necessary 
 - Specify the path to save the data to `output_root_dir` in config files `configs/*.py`
-- Run `python render_THUman.py --config_path configs/[dataset_name].py`
+- Run `python render_THUman.py --config_path configs/[dataset_name].py --num_process 20`
 
 ## Dataset name
 - all
