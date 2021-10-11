@@ -117,7 +117,7 @@ def validate(gen, val_loaders, config, ddp=False, metric=["SSIM", "PSNR"]):
     mse = nn.MSELoss()
 
     size = config.dataset.image_size
-    nerf_only = config.nerf_only
+    cnn_based = config.generator_params.cnn_based
     auto_encoder = config.auto_encoder
 
     if auto_encoder:  # load view2 dataset for novel view reconstruction
@@ -177,8 +177,8 @@ def validate(gen, val_loaders, config, ddp=False, metric=["SSIM", "PSNR"]):
                 else:
                     z = None
 
-                if nerf_only:
-                    # arf
+                if not cnn_based:
+                    # NARF
                     if inv_intrinsics is None:
                         inv_intrinsics = torch.tensor(get_module(gen, ddp).inv_intrinsics).float().cuda()
                     nerf = get_module(gen, ddp).nerf
@@ -232,6 +232,7 @@ def train_func(config, dataset, data_loader, rank, ddp=False, world_size=1):
         record_setting(f"{out_dir}/result/{out_name}")
 
     size = config.dataset.image_size
+    cnn_based = config.generator_params.cnn_based
     num_iter = config.num_iter
 
     dataset = dataset[0]
@@ -239,7 +240,7 @@ def train_func(config, dataset, data_loader, rank, ddp=False, world_size=1):
     intrinsics = dataset.intrinsics
 
     if config.auto_encoder:
-        if config.nerf_only:
+        if not cnn_based:
             gen = NeRFAutoEncoder(config.generator_params, size, intrinsics, num_bone, ch=32,
                                   parent_id=dataset.output_parents)
         else:
@@ -248,7 +249,7 @@ def train_func(config, dataset, data_loader, rank, ddp=False, world_size=1):
                             num_bone=dataset.num_bone, ch=32, size=size,
                             intrinsics=dataset.cp.intrinsics, rgb=True, auto_encoder=True,
                             parent_id=dataset.output_parents)
-    elif config.nerf_only:
+    elif not cnn_based:
         gen = NeRFGenerator(config.generator_params, size, intrinsics, num_bone,
                             ray_sampler=random_ray_sampler,
                             parent_id=dataset.output_parents)
@@ -305,11 +306,15 @@ def train_func(config, dataset, data_loader, rank, ddp=False, world_size=1):
     train_start = time.time()
 
     val_interval = config.val_interval
+    print_interval = config.print_interval
+    tensorboard_interval = config.tensorboard_interval
+    save_interval = config.save_interval
+
     while iter < num_iter:
         for i, data in enumerate(train_loader):
             if rank == 0:
                 print(iter)
-            if (iter + 1) % 100 == 0 and rank == 0:
+            if (iter + 1) % print_interval == 0 and rank == 0:
                 print(f"{iter + 1} iter, {(time.time() - start_time) / iter} s/iter")
             gen.train()
 
@@ -323,23 +328,17 @@ def train_func(config, dataset, data_loader, rank, ddp=False, world_size=1):
                 part_bone_disparity = batch["part_bone_disparity"]
                 keypoint_mask = batch["keypoint_mask"]
 
-            if "inv_intrinsics" in batch:
-                inv_intrinsics = batch["inv_intrinsics"]
-            else:
-                inv_intrinsics = None
+            inv_intrinsics = batch.get("inv_intrinsics")
 
             if "pose_to_world" in batch:
                 pose_to_camera = batch["pose_to_camera"]
                 pose_to_world = batch["pose_to_world"]
-                if "bone_length" in batch:
-                    bone_length = batch["bone_length"]
-                else:
-                    bone_length = None
+                bone_length = batch.get("bone_length")
 
             gen_optimizer.zero_grad()
             # generate image (sparse sample)
             if config.auto_encoder:
-                if config.nerf_only:
+                if not cnn_based:
                     nerf_color, nerf_mask, grid = gen(pose_to_camera, pose_to_world,
                                                       bone_length, img, inv_intrinsics=inv_intrinsics)
                     loss_color, loss_mask = loss_func(grid, nerf_color, nerf_mask, img, mask)
@@ -352,7 +351,7 @@ def train_func(config, dataset, data_loader, rank, ddp=False, world_size=1):
                     loss_mask = mse(mask, cnn_mask) * config.loss.mask_coef
                     loss = loss_color + loss_mask
 
-            elif config.nerf_only:
+            elif not cnn_based:
                 nerf_color, nerf_mask, grid = gen(pose_to_camera, pose_to_world, bone_length,
                                                   inv_intrinsics=inv_intrinsics)
                 loss_color, loss_mask = loss_func(grid, nerf_color, nerf_mask, img, mask)
@@ -368,7 +367,7 @@ def train_func(config, dataset, data_loader, rank, ddp=False, world_size=1):
             train_loss_color += loss_color.item() * config.dataset.bs
             train_loss_mask += loss_mask.item() * config.dataset.bs
 
-            if (iter + 1) % 100 == 0 and rank == 0:  # tensorboard
+            if (iter + 1) % tensorboard_interval == 0 and rank == 0:  # tensorboard
                 write(iter, loss, "gen", writer)
             loss.backward()
 
@@ -381,12 +380,12 @@ def train_func(config, dataset, data_loader, rank, ddp=False, world_size=1):
                 scheduler.step()
             torch.cuda.empty_cache()
 
-            if (iter + 1) % 200 == 0 and rank == 0:
-                # save image if cnn_only
-                if not config.nerf_only:  # cnn only
-                    save_img(cnn_color, f"{out_dir}/result/{out_name}/rgb_{iter // 5000 * 5000}.png")
-                    save_img(img, f"{out_dir}/result/{out_name}/real_{iter // 5000 * 5000}.png")
-                    save_img(bone_mask, f"{out_dir}/result/{out_name}/bone_{iter // 5000 * 5000}.png")
+            if (iter + 1) % save_interval == 0 and rank == 0:
+                # save image if cnn
+                if cnn_based:  # cnn
+                    save_img(cnn_color, f"{out_dir}/result/{out_name}/rgb_{iter // 50000 * 50000}.png")
+                    save_img(img, f"{out_dir}/result/{out_name}/real_{iter // 50000 * 50000}.png")
+                    save_img(bone_mask, f"{out_dir}/result/{out_name}/bone_{iter // 50000 * 50000}.png")
 
                 if ddp:
                     gen_module = gen.module
@@ -431,7 +430,6 @@ def train_func(config, dataset, data_loader, rank, ddp=False, world_size=1):
                 train_loss_color = 0
                 train_loss_mask = 0
 
-                #
                 train_start = time.time()
 
             iter += 1
@@ -441,13 +439,14 @@ def validation_func(config, dataset, data_loader, rank, ddp=False):
     out_dir = config.out_root
     out_name = config.out
     size = config.dataset.image_size
+    cnn_based = config.generator_params.cnn_based
 
     dataset = dataset[0]
     num_bone = dataset.num_bone
     intrinsics = dataset.intrinsics
 
     if config.auto_encoder:
-        if config.nerf_only:
+        if not cnn_based:
             gen = NeRFAutoEncoder(config.generator_params, size, intrinsics, num_bone, ch=32,
                                   parent_id=dataset.output_parents)
         else:
@@ -456,7 +455,7 @@ def validation_func(config, dataset, data_loader, rank, ddp=False):
                             num_bone=dataset.num_bone, ch=32, size=size,
                             intrinsics=dataset.cp.intrinsics, rgb=True, auto_encoder=True,
                             parent_id=dataset.output_parents)
-    elif config.nerf_only:
+    elif not cnn_based:
         gen = NeRFGenerator(config.generator_params, size, intrinsics, num_bone,
                             ray_sampler=random_ray_sampler,
                             parent_id=dataset.output_parents)

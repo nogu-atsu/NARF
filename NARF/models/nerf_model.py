@@ -264,15 +264,12 @@ class NeRF(nn.Module):
                     net = net + self.mask_linear_l(encoded_length)
                 input_mask = self.mask_linear(F.relu(net, inplace=True))  # B x num_bone x n
 
-                if self.config.hard_mask:
-                    _mask_prob = F.gumbel_softmax(input_mask, tau=0.01, dim=1)
+                if self.selector_activation == "softmax":
+                    _mask_prob = torch.softmax(input_mask / self.selector_tmp, dim=1)  # B x num_bone x n
+                elif self.selector_activation == "sigmoid":
+                    _mask_prob = torch.sigmoid(input_mask)  # B x num_bone x n
                 else:
-                    if self.selector_activation == "softmax":
-                        _mask_prob = torch.softmax(input_mask / self.selector_tmp, dim=1)  # B x num_bone x n
-                    elif self.selector_activation == "sigmoid":
-                        _mask_prob = torch.sigmoid(input_mask)  # B x num_bone x n
-                    else:
-                        raise ValueError()
+                    raise ValueError()
 
                 if self.save_mask:  # save mask for segmentation rendering
                     self.mask_prob = _mask_prob.argmax(dim=1).data.cpu().numpy()  # B x n

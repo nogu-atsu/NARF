@@ -203,7 +203,7 @@ class UNetRGBGenerator(nn.Module):
 class Generator(nn.Module):
     def __init__(self, config, in_dim=3, num_bone=19, ch=64, size=128, intrinsics=None, rgb=True,
                  ray_sampler=random_or_patch_sampler, auto_encoder=False, parent_id=None):
-        """
+        """CNN based model
 
         :param config:
         :param in_dim:
@@ -220,39 +220,25 @@ class Generator(nn.Module):
         assert intrinsics is not None
         self.config = config
         self.size = size
-        self.use_nerf = config.use_nerf
         self.auto_encoder = auto_encoder
 
-        if rgb:
-            if auto_encoder:
-                self.encoder = Encoder(3, config.z_dim, ch=ch)
+        if auto_encoder:
+            self.encoder = Encoder(3, config.z_dim, ch=ch)
 
-            self.intrinsics = intrinsics
-            self.inv_intrinsics = np.linalg.inv(intrinsics)
-            normalized_intrinsics = np.concatenate([intrinsics[:2] / size, np.array([[0, 0, 1]])], axis=0)
-            self.normalized_inv_intrinsics = np.linalg.inv(normalized_intrinsics)
-            self.ray_sampler = ray_sampler
-            self.cnn_gen = UNetRGBGenerator(in_dim, num_bone, z_dim=config.z_dim, ch=ch, size=size)
-            if self.use_nerf:
-                nerf = get_nerf_module(config)
-                self.nerf = nerf(config.nerf_params, z_dim=config.z_dim, num_bone=num_bone, bone_length=True,
-                                 parent=parent_id)
-        else:
-            assert False, "rgbd generator is currently not supported"
+        self.intrinsics = intrinsics
+        self.inv_intrinsics = np.linalg.inv(intrinsics)
+        normalized_intrinsics = np.concatenate([intrinsics[:2] / size, np.array([[0, 0, 1]])], axis=0)
+        self.normalized_inv_intrinsics = np.linalg.inv(normalized_intrinsics)
+        self.ray_sampler = ray_sampler
+        self.cnn_gen = UNetRGBGenerator(in_dim, num_bone, z_dim=config.z_dim, ch=ch, size=size)
 
     @property
     def memory_cost(self):
-        if hasattr(self, "nerf"):
-            return self.nerf.memory_cost
-        else:
-            return 0
+        return 0
 
     @property
     def flops(self):
-        if hasattr(self, "nerf"):
-            return self.nerf.flops
-        else:
-            return 0
+        return 0
 
     def forward(self, bone_disparity, part_disparity, keypoint, z, pose_to_camera, pose_to_world, bone_length,
                 background, tmp=5.0, img=None, inv_intrinsics=None):
@@ -267,41 +253,13 @@ class Generator(nn.Module):
         :param inv_intrinsics:
         :return:
         """
-        batchsize = bone_disparity.shape[0]
-        patch_size = self.config.patch_size
-
         if img is not None and self.auto_encoder:
             z = self.encoder(img)
 
         cnn_color, cnn_mask = self.cnn_gen(bone_disparity, part_disparity, keypoint, z, pose_to_camera,
                                            pose_to_world, background, tmp=tmp)
 
-        if self.use_nerf:
-            grid, img_coord = self.ray_sampler(self.size, patch_size, batchsize)
-
-            # sparse rendering
-            if inv_intrinsics is None:
-                inv_intrinsics = self.inv_intrinsics
-            inv_intrinsics = torch.tensor(inv_intrinsics).float().cuda(img_coord.device)
-            nerf_color, nerf_mask = self.nerf(batchsize, patch_size ** 2, img_coord,
-                                              pose_to_camera, inv_intrinsics, z,
-                                              pose_to_world, bone_length, thres=0.0,
-                                              Nc=self.config.nerf_params.Nc,
-                                              Nf=self.config.nerf_params.Nf)
-
-            # merge with background
-            if background is None:
-                nerf_color = nerf_color + (-1) * (1 - nerf_mask[:, None])  # background is black
-            else:
-                if np.isscalar(background):
-                    sampled_background = background
-                else:
-                    background = background.reshape(batchsize, 3, self.size ** 2)
-                    sampled_background = torch.gather(background, dim=2, index=grid[:, None].repeat(1, 3, 1))
-                nerf_color = nerf_color + sampled_background * (1 - nerf_mask[:, None])
-        else:
-            nerf_color, nerf_mask, grid = None, None, None
-        return cnn_color, cnn_mask, nerf_color, nerf_mask, grid
+        return cnn_color, cnn_mask, None, None, None
 
     def cnn_forward(self, bone_disparity, part_disparity, keypoint, z, pose_to_camera, pose_to_world,
                     background=None, tmp=5.0, img=None):

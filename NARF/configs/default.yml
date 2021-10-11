@@ -1,0 +1,99 @@
+out_root: path_to_your_output_root # <- need change
+out: output_directory # <- need change
+
+dataset:
+  data_root: # for old type config
+  name: human
+  bs: 4  # batchsize
+  image_size: 128
+  random_background: False
+  load_camera_intrinsics: False
+  train:
+    train: True
+    data_root:  # <- need change
+    n_mesh: 26
+    n_rendered_per_mesh: 100
+    n_imgs_per_mesh: 100
+  val:
+    same_dist:
+      train: False
+      data_root:   # <- need change
+      n_mesh: 30
+      n_rendered_per_mesh: 100
+      n_imgs_per_mesh: 12
+    novel_pose:
+      train: False
+      data_root:  # <- need change
+      n_mesh: 30
+      n_rendered_per_mesh: 100
+      n_imgs_per_mesh: 10
+    novel_view:
+      train: False
+      data_root:  # <- need change
+      n_mesh: 30
+      n_rendered_per_mesh: 20
+      n_imgs_per_mesh: 10
+    novel_pose_novel_view:
+      train: False
+      data_root:  # <- need change
+      n_mesh: 22
+      n_rendered_per_mesh: 20
+      n_imgs_per_mesh: 20
+
+generator_params:
+  z_dim: 256
+  patch_size: 24
+  cnn_based: False
+
+  nerf_params:
+    hidden_size: 32  # hidden size of NeRF
+    Nc: 48  # number of points for coarse sampling
+    Nf: 48  # number of points for fine sampling
+    no_world_pose: False
+    no_ray_direction: False
+    arf_temperature: 0.1
+    sum_density: False
+    concat_pose: False
+    concat: False
+    density_scale: 1
+    detach_alpha: False
+    se3: False
+    max_chunk_size: 16384
+    # concat model
+    mask_input: False
+    mask_bone_length: True
+    mask_before_PE: False
+    selector_activation: softmax
+    use_scale_factor: True
+    weighted_average: False
+    selector_adaptive_tmp:
+      start: 1
+      gamma: 1
+      min: 1
+
+    # batchsize for rendering
+    render_bs: 1000
+
+loss:
+  nerf_loss_type: mse
+  color_coef: 1
+  mask_coef: 1
+
+auto_encoder: False
+
+# hyper parameters
+num_iter: 1000000
+lr: 0.01
+scheduler_gamma: 1
+
+val_interval: 500 # validation interval
+print_interval: 100
+tensorboard_interval: 100
+save_interval: 200
+
+resume: # path to the snapshot if necessary
+
+# For DDP
+master_addr: 'localhost'
+master_port: '12355'
+backend: 'nccl'

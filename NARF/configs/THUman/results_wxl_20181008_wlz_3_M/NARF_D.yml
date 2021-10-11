@@ -1,0 +1,72 @@
+out_root: /home/acc12675ut/data/outputs/unsupervised_pose_disentanglement/train_part_wise_NeRF_supervised # <- need change
+out: results_wxl_20181008_wlz_3_M # <- need change
+
+dataset:
+  name: human
+  bs: 4 # batchsize
+  image_size: 128
+  train:
+    train: True
+    data_root: /home/acc12675ut/data/dataset/THUman/results_wxl_20181008_wlz_3_M/train  # <- need change
+    n_mesh: 26
+    n_rendered_per_mesh: 100
+    n_imgs_per_mesh: 100
+  val:
+    same_dist:
+      train: True
+      data_root: /home/acc12675ut/data/dataset/THUman/results_wxl_20181008_wlz_3_M/same_view  # <- need change
+      n_mesh: 26
+      n_rendered_per_mesh: 20
+      n_imgs_per_mesh: 20
+    novel_pose:
+      train: False
+      data_root: /home/acc12675ut/data/dataset/THUman/results_wxl_20181008_wlz_3_M/same_view  # <- need change
+      n_mesh: 30
+      n_rendered_per_mesh: 20
+      n_imgs_per_mesh: 20
+    novel_view:
+      train: True
+      data_root: /home/acc12675ut/data/dataset/THUman/results_wxl_20181008_wlz_3_M/novel_view  # <- need change
+      n_mesh: 26
+      n_rendered_per_mesh: 20
+      n_imgs_per_mesh: 20
+    novel_pose_novel_view:
+      train: False
+      data_root: /home/acc12675ut/data/dataset/THUman/results_wxl_20181008_wlz_3_M/novel_view  # <- need change
+      n_mesh: 30
+      n_rendered_per_mesh: 20
+      n_imgs_per_mesh: 20
+
+
+generator_params:
+  z_dim: 0
+  patch_size: 24
+  nerf_params:
+    hidden_size: 256  # hidden size of NeRF
+    Nc: 48  # number of points for coarse sampling
+    Nf: 48  # number of points for fine sampling
+    no_world_pose: False
+    concat: True
+    density_scale: 1
+    se3: True
+    # concat
+    mask_input: True
+    mask_bone_length: False
+
+
+loss:
+  nerf_loss_type: mse
+  color_coef: 1
+  mask_coef: 1
+
+# hyper parameters
+num_iter: 1000000
+lr: 0.01
+scheduler_gamma: 0.99995
+
+resume: # path to the snapshot if necessary
+
+# For DDP
+master_addr: 'localhost'
+master_port: '12355'
+backend: 'nccl'
