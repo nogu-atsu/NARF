@@ -85,7 +85,7 @@ num_iter: 1000000
 lr: 0.01
 scheduler_gamma: 1
 
-val_interval: 500 # validation interval
+val_interval: 5000 # validation interval
 print_interval: 100
 tensorboard_interval: 100
 save_interval: 200

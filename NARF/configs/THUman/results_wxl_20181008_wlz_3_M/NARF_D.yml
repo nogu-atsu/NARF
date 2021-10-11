@@ -60,7 +60,7 @@ loss:
   mask_coef: 1
 
 # hyper parameters
-num_iter: 1000000
+num_iter: 100000
 lr: 0.01
 scheduler_gamma: 0.99995
 

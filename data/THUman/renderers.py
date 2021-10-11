@@ -36,8 +36,7 @@ import cv2 as cv
 
 from opendr.lighting import LambertianPointLight, SphericalHarmonics
 from opendr.camera import ProjectPoints
-# from opendr.renderer import ColoredRenderer
-from MyRenderer import ColoredRenderer
+from opendr.renderer import ColoredRenderer
 
 import util
 
