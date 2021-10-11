@@ -81,6 +81,10 @@ Please refer to https://github.com/nogu-atsu/NARF_release/tree/master/data/THUma
 ## Validation
 ```python train.py --config NARF/configs/your_config.yml --num_workers 1 --validation```
 
+or
+
+```python train_ddp.py --config NARF/configs/your_config.yml --gpus 4 --num_workers 1 --validation```
+
 ## Visualize results
 
 - Random sampling
