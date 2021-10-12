@@ -69,15 +69,3 @@ def ddp_data_sampler(dataset, rank, world_size, shuffle, drop_last):
         drop_last=drop_last
     )
     return dist_sampler
-
-
-def replace_path(config, paths={"out_root": ["/groups1/gcc50521/noguchi/data/outputs", "/data/unagi0/noguchi/D1"],
-                                "data_root": ["/home/acc12675ut/data", "/data/unagi0/noguchi/"]}):
-    config.out_root = config.out_root.replace(paths["out_root"][0], paths["out_root"][1])
-    config.dataset.train.data_root = config.dataset.train.data_root.replace(paths["data_root"][0],
-                                                                            paths["data_root"][1])
-    for k, v in config.dataset.val.items():
-        if v.data_root is not None:
-            config.dataset.val[k].data_root = v.data_root.replace(paths["data_root"][0], paths["data_root"][1])
-
-    return config
