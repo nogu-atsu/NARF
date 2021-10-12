@@ -8,7 +8,7 @@ from torch import nn
 
 from .nerf_model import NeRF, PoseConditionalNeRF
 from .stylegan import EqualConv2d, EqualLinear
-from .tiny_utils import flex_grid_ray_sampler, random_or_patch_sampler
+from .model_utils import flex_grid_ray_sampler, random_or_patch_sampler
 
 
 class ConditionalBatchNorm(nn.Module):

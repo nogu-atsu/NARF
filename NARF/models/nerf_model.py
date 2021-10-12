@@ -7,7 +7,7 @@ import torch.utils.checkpoint
 from .activation import MyReLU
 from .bone_utils import get_canonical_pose
 from .stylegan import EqualLinear, EqualConv1d, NormalizedConv1d
-from .tiny_utils import in_cube
+from .model_utils import in_cube
 from .utils_3d import SE3
 
 
