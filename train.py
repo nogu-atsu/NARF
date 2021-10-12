@@ -444,6 +444,8 @@ def validation_func(config, dataset, data_loader, rank, ddp=False):
                 gen_module = gen
             gen_module.load_state_dict(snapshot["gen"], strict=False)
             del snapshot
+    else:
+        assert False, "Please load a pretrained model"
 
     train_loader, val_loaders = data_loader
 

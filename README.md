@@ -58,8 +58,8 @@ The video below visualizes the disentangled representations and segmentation mas
 
 # Code
 ## Envirionment
-python 3.7.*
-pytorch >= 1.7.1
+python 3.7.*\
+pytorch >= 1.7.1\
 torchvision >= 0.8.2
 ```
 pip install tensorboardx pyyaml opencv-python pandas ninja easydict tqdm scipy scikit-image
@@ -69,41 +69,45 @@ pip install tensorboardx pyyaml opencv-python pandas ninja easydict tqdm scipy s
 Please refer to https://github.com/nogu-atsu/NARF_release/tree/master/data/THUman
 
 ## Training
-- Write config file like `NARF/configs/THUman/results_wxl_20181008_wlz_3_M/NARF_D.yml`. Do not change `default.yml`
+- Write config file like `NARF/configs/[your_config.yml]`. Do not change `default.yml`
     - `out_root`: root directory to save models
     - `out`: experiment name
     - `data_root`: directory the `dataset` is in
 - Run training specifying a config file
   
-    ```CUDA_VISIBLE_DEVICES=0 python train.py --config NARF/configs/your_config.yml --num_workers 1```
+    ```CUDA_VISIBLE_DEVICES=0 python train.py --config NARF/configs/[your_config.yml] --num_workers 1```
 - Distributed data parallel
   
-    ```python train_ddp.py --config NARF/configs/your_config.yml --gpus 4 --num_workers 1```
+    ```python train_ddp.py --config NARF/configs/[your_config.yml] --gpus 4 --num_workers 1```
 
 ## Validation
 - Single gpu
 
-    ```python train.py --config NARF/configs/your_config.yml --num_workers 1 --validation```
+    ```python train.py --config NARF/configs/[your_config.yml] --num_workers 1 --validation --resume_latest```
 - Multiple gpus
 
-    ```python train_ddp.py --config NARF/configs/your_config.yml --gpus 4 --num_workers 1 --validation```
+    ```python train_ddp.py --config NARF/configs/[your_config.yml] --gpus 4 --num_workers 1 --validation --resume_latest```
+- The results are saved to `val_metrics.json` in the same directory as the snapshots.
+
+## Computational cost
+```
+python computational_cost.py --config NARF/configs/[your_config.yml]
+```
 
 ## Visualize results
 
 - Generate interpolation videos
   ```
   cd visualize
-  python NARF_interpolation.py --config ../NARF/configs/THUman/results_wxl_20181008_wlz_3_M/NARF_D.yml
+  python NARF_interpolation.py --config ../NARF/configs/[your_config.yml]
   ```
 
   The results are saved to the same directory as the snapshots.
   With the default settings, it takes 30 minutes on a V100 gpu to generate a 30-frame video
 
 # Acknowledgement
-https://github.com/rosinality/stylegan2-pytorch
-
-https://github.com/ZhengZerong/DeepHuman
-
+https://github.com/rosinality/stylegan2-pytorch \
+https://github.com/ZhengZerong/DeepHuman \
 https://smpl.is.tue.mpg.de/
 
 # BibTex
