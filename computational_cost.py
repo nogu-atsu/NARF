@@ -12,10 +12,10 @@ from train import create_dataloader
 
 def main(config):
     dataset, _ = create_dataloader(config.dataset)
-    train_func(config, dataset)
+    compute_cost(config, dataset)
 
 
-def train_func(config, dataset):
+def compute_cost(config, dataset):
     torch.backends.cudnn.benchmark = True
 
     size = config.dataset.image_size
@@ -54,17 +54,15 @@ def train_func(config, dataset):
     print(out_name)
     print("#Params", num_params)
     print("#FLPOs", gen.flops * num_points_per_ray)
-    print("#FLPOs", gen.memory_cost * num_points_per_ray)
+    print("#Memmory", gen.memory_cost * num_points_per_ray)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, default="NARF/configs/default.yml")
     parser.add_argument('--default_config', type=str, default="NARF/configs/default.yml")
-    parser.add_argument('--resume_latest', action="store_true")
-    parser.add_argument('--num_workers', type=int, default=0)
     args = parser.parse_args()
 
-    config = yaml_config(args.config, args.default_config, args.resume_latest, args.num_workers)
+    config = yaml_config(args.config, args.default_config)
 
     main(config)
