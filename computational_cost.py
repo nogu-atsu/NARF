@@ -5,7 +5,7 @@ import argparse
 import torch
 
 from NARF.models.net import NeRFGenerator, Generator, NeRFAutoEncoder
-from NARF.models.tiny_utils import random_ray_sampler
+from NARF.models.model_utils import random_ray_sampler
 from NARF.utils import yaml_config
 from train import create_dataloader
 

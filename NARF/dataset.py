@@ -10,7 +10,7 @@ from scipy.spatial.transform import Slerp
 from torch.utils.data import Dataset
 from tqdm import tqdm
 
-from .models.tiny_utils import get_final_papernt_id
+from .models.model_utils import get_final_papernt_id
 from .models.utils_3d import THUmanPrior, CameraProjection, create_mask
 
 

@@ -14,7 +14,7 @@ from tqdm import tqdm
 from NARF.dataset import THUmanDataset, BlenderDataset
 from NARF.models.loss import SparseLoss
 from NARF.models.net import NeRFGenerator, Generator, NeRFAutoEncoder
-from NARF.models.tiny_utils import random_ray_sampler, all_reduce, get_module
+from NARF.models.model_utils import random_ray_sampler, all_reduce, get_module
 from NARF.utils import yaml_config, write
 from NARF.visualization_utils import save_img, ssim, psnr
 
