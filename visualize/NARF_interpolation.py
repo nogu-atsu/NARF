@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 sys.path.append("..")
 from NARF.dataset import THUmanPoseDataset, THUmanDataset
-from NARF.models.net import Generator, NeRFGenerator, NeRFAutoEncoder
+from NARF.models.net import NeRFGenerator, NeRFAutoEncoder
 from NARF.utils import yaml_config
 
 
@@ -204,10 +204,6 @@ if __name__ == "__main__":
 
     elif cnn_based:
         assert False, "Please run CNN_interpolation.py"
-        gen = Generator(config.generator_params,
-                        in_dim=dataset.num_bone + dataset.num_valid_keypoints + 3,
-                        num_bone=dataset.num_bone, ch=32, size=size,
-                        intrinsics=dataset.cp.intrinsics, rgb=True).to("cuda")
     else:
         gen = NeRFGenerator(config.generator_params, size, dataset.cp.intrinsics,
                             num_bone=dataset.num_bone).to("cuda")
