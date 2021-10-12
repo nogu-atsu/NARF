@@ -95,14 +95,14 @@ Please refer to https://github.com/nogu-atsu/NARF_release/tree/master/data/THUma
   The results are saved to the same directory as the snapshots.
   With the default settings, it takes 30 minutes on a V100 gpu to generate a 30-frame video
 
-## Acknowledgement
+# Acknowledgement
 https://github.com/rosinality/stylegan2-pytorch
 
 https://github.com/ZhengZerong/DeepHuman
 
 https://smpl.is.tue.mpg.de/
 
-## BibTex
+# BibTex
 ```
 @inproceedings{2021narf
   author    = {Noguchi, Atsuhiro and Sun, Xiao and Lin, Stephen and Harada, Tatsuya},

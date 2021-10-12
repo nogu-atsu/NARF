@@ -189,13 +189,6 @@ class THUmanDataset(Dataset):
             bone_length = self.get_bone_length(pose_to_world)
 
             if self.return_bone_mask:
-                # TODO this flag seems not used
-                # intrinsics = np.linalg.inv(self.inv_intrinsics[i]) if self.load_camera_intrinsics else None
-                # image_coord = self.cp.pose_to_image_coord(pose_to_camera, intrinsics=intrinsics)
-                # pose_to_camera_, image_coord = self.add_blank_part(pose_to_camera[None], image_coord)
-                # disparity, bone_mask, part_bone_disparity, keypoint_mask = create_mask(self.hpp, pose_to_camera_,
-                #                                                                        image_coord,
-                #                                                                        self.size)
                 disparity, bone_mask, part_bone_disparity, keypoint_mask = [np.array([0], dtype="float32") for _ in
                                                                             range(4)]
                 return_dict["disparity"] = disparity
@@ -221,7 +214,6 @@ class THUmanDataset(Dataset):
 
 class BlenderDataset(THUmanDataset):
     """Blender dataset"""
-
     def __init__(self, config, size=200, random_background=False, return_bone_params=False,
                  num_repeat_in_epoch=100, just_cache=False):
         random.seed()
