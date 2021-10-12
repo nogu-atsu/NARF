@@ -15,7 +15,7 @@ from NARF.dataset import THUmanDataset, BlenderDataset
 from NARF.models.loss import SparseLoss
 from NARF.models.net import NeRFGenerator, Generator, NeRFAutoEncoder
 from NARF.models.tiny_utils import random_ray_sampler, all_reduce, get_module
-from NARF.utils import record_setting, yaml_config, write
+from NARF.utils import yaml_config, write
 from NARF.visualization_utils import save_img, ssim, psnr
 
 
@@ -191,7 +191,6 @@ def train_func(config, dataset, data_loader, rank, ddp=False, world_size=1):
     if rank == 0:
         writer = tbx.SummaryWriter(f"{out_dir}/runs/{out_name}")
         os.makedirs(f"{out_dir}/result/{out_name}", exist_ok=True)
-        record_setting(f"{out_dir}/result/{out_name}")
 
     size = config.dataset.image_size
     cnn_based = config.generator_params.cnn_based

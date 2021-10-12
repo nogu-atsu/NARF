@@ -79,10 +79,9 @@ Please refer to https://github.com/nogu-atsu/NARF_release/tree/master/data/THUma
     ```python train_ddp.py --config NARF/configs/your_config.yml --gpus 4 --num_workers 1```
 
 ## Validation
+- Single gpu
 ```python train.py --config NARF/configs/your_config.yml --num_workers 1 --validation```
-
-or
-
+- Multiple gpus
 ```python train_ddp.py --config NARF/configs/your_config.yml --gpus 4 --num_workers 1 --validation```
 
 ## Visualize results
@@ -93,10 +92,12 @@ or
     ```
   The results are saved to the same directory as the snapshots
 
+## Acknowledgement
+https://github.com/rosinality/stylegan2-pytorch
 
-## License
-TODO: Add license based on https://github.com/rosinality/stylegan2-pytorch
+https://github.com/ZhengZerong/DeepHuman
 
+https://smpl.is.tue.mpg.de/
 
 ## BibTex
 ```
