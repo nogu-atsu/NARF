@@ -73,16 +73,20 @@ Please refer to https://github.com/nogu-atsu/NARF_release/tree/master/data/THUma
     - `out_root`: root directory to save models
     - `out`: experiment name
     - `data_root`: directory the `dataset` is in
-- Run training specifying config file
+- Run training specifying a config file
+  
     ```CUDA_VISIBLE_DEVICES=0 python train.py --config NARF/configs/your_config.yml --num_workers 1```
-- DDP training
+- Distributed data parallel
+  
     ```python train_ddp.py --config NARF/configs/your_config.yml --gpus 4 --num_workers 1```
 
 ## Validation
 - Single gpu
-```python train.py --config NARF/configs/your_config.yml --num_workers 1 --validation```
+
+    ```python train.py --config NARF/configs/your_config.yml --num_workers 1 --validation```
 - Multiple gpus
-```python train_ddp.py --config NARF/configs/your_config.yml --gpus 4 --num_workers 1 --validation```
+
+    ```python train_ddp.py --config NARF/configs/your_config.yml --gpus 4 --num_workers 1 --validation```
 
 ## Visualize results
 
