@@ -34,8 +34,8 @@ import os
 import numpy as np
 
 # path
-dataset_dir = '/home/acc12675ut/data/dataset/THUman/dataset/'
-output_root_dir = '/home/acc12675ut/data/dataset/THUman/all'
+dataset_dir = '/home/dataset'  # <- change here
+output_root_dir = '/home/dataset/THUman/all'  # <- change here
 data_list_fname = 'dataset/all/data_list.txt'
 
 # axes along which flipping is applied
@@ -49,7 +49,7 @@ render_img_h = 128
 corner_size = 0.01
 
 # use random lighting
-random_lighting = False
+random_lighting = True
 
 # data for autoencoder
 autoencoder = True

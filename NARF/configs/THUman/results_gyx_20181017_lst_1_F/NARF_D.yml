@@ -1,5 +1,5 @@
-out_root: /home/acc12675ut/data/outputs/unsupervised_pose_disentanglement/train_part_wise_NeRF_supervised # <- need change
-out: results_gyx_20181017_lst_1_F # <- need change
+out_root: /home/output_root # <- need change
+out: results_gyx_20181017_lst_1_F_NARF_D # <- need change
 
 dataset:
   name: human
@@ -7,33 +7,33 @@ dataset:
   image_size: 128
   train:
     train: True
-    data_root: /home/acc12675ut/data/dataset/THUman/results_gyx_20181017_lst_1_F/train  # <- need change
+    data_root: /home/dataset/THUman/results_gyx_20181017_lst_1_F/train  # <- need change
     n_mesh: 26
     n_rendered_per_mesh: 100
     n_imgs_per_mesh: 100
   val:
     same_dist:
       train: True
-      data_root: /home/acc12675ut/data/dataset/THUman/results_gyx_20181017_lst_1_F/same_view  # <- need change
+      data_root: /home/dataset/THUman/results_gyx_20181017_lst_1_F/same_view  # <- need change
       n_mesh: 26
       n_rendered_per_mesh: 20
       n_imgs_per_mesh: 20
     novel_pose:
       train: False
-      data_root: /home/acc12675ut/data/dataset/THUman/results_gyx_20181017_lst_1_F/same_view  # <- need change
-      n_mesh: 30
+      data_root: /home/dataset/THUman/results_gyx_20181017_lst_1_F/same_view  # <- need change
+      n_mesh: 22
       n_rendered_per_mesh: 20
       n_imgs_per_mesh: 20
     novel_view:
       train: True
-      data_root: /home/acc12675ut/data/dataset/THUman/results_gyx_20181017_lst_1_F/novel_view  # <- need change
+      data_root: /home/dataset/THUman/results_gyx_20181017_lst_1_F/novel_view  # <- need change
       n_mesh: 26
       n_rendered_per_mesh: 20
       n_imgs_per_mesh: 20
     novel_pose_novel_view:
       train: False
-      data_root: /home/acc12675ut/data/dataset/THUman/results_gyx_20181017_lst_1_F/novel_view  # <- need change
-      n_mesh: 30
+      data_root: /home/dataset/THUman/results_gyx_20181017_lst_1_F/novel_view  # <- need change
+      n_mesh: 22
       n_rendered_per_mesh: 20
       n_imgs_per_mesh: 20
 

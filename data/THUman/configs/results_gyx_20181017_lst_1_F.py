@@ -34,8 +34,8 @@ import os
 import numpy as np
 
 # path
-dataset_dir = '/home/acc12675ut/data/dataset/THUman/dataset/'
-output_root_dir = '/home/acc12675ut/data/dataset/THUman/results_gyx_20181017_lst_1_F'
+dataset_dir = '/home/dataset'  # <- change here
+output_root_dir = '/home/dataset/THUman/results_gyx_20181017_lst_1_F'  # <- change here
 data_list_fname = 'dataset/results_gyx_20181017_lst_1_F/data_list.txt'
 
 # axes along which flipping is applied
