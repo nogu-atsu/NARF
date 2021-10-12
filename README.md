@@ -86,11 +86,14 @@ Please refer to https://github.com/nogu-atsu/NARF_release/tree/master/data/THUma
 
 ## Visualize results
 
-- Random sampling
-    ```
-    python NARF_random_image.py --config ../configs/[your_config].yml
-    ```
-  The results are saved to the same directory as the snapshots
+- Generate interpolation videos
+  ```
+  cd visualize
+  python NARF_interpolation.py --config ../NARF/configs/THUman/results_wxl_20181008_wlz_3_M/NARF_D.yml
+  ```
+
+  The results are saved to the same directory as the snapshots.
+  With the default settings, it takes 30 minutes on a V100 gpu to generate a 30-frame video
 
 ## Acknowledgement
 https://github.com/rosinality/stylegan2-pytorch

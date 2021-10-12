@@ -16,8 +16,6 @@ from NARF.utils import yaml_config
 
 
 def save_interpolation_video(name="interpolate_camera", segmentation=False, num_frames=30, save_video=True):
-    num_render = 2
-    num_z = 3
     nerf_video = []
     segmentation_video = []
     in_img = []
@@ -182,6 +180,10 @@ if __name__ == "__main__":
     config = yaml_config(args.config, args.default_config, args.resume_latest, args.num_workers)
 
     batchsize = 1
+    num_render = 2  # A grid of num_render x num_render videos is generated.
+    num_z = 3
+    render_size = 256
+
     config_path = args.config
     default_config_path = args.default_config
 
@@ -190,7 +192,6 @@ if __name__ == "__main__":
     out_dir = config.out_root
     out_name = config.out
     size = config.dataset.image_size
-    render_size = 256
     dataset_name = config.dataset.name
     data_root = config.dataset.train.data_root
     random_background = config.dataset.random_background
