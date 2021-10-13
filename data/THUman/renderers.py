@@ -28,17 +28,14 @@
 """Rendering APIs"""
 
 from __future__ import division, print_function
-import time
 
-import numpy as np
 import chumpy as ch
 import cv2 as cv
-
-from opendr.lighting import LambertianPointLight, SphericalHarmonics
+import numpy as np
 from opendr.camera import ProjectPoints
-from opendr.renderer import ColoredRenderer
+from opendr.lighting import LambertianPointLight, SphericalHarmonics
 
-import util
+from MyRenderer import ColoredRenderer
 
 
 def _project_vertices(v, w, h, cam_r, cam_t):
