@@ -69,7 +69,7 @@ pip install tensorboardx pyyaml opencv-python pandas ninja easydict tqdm scipy s
 Please refer to https://github.com/nogu-atsu/NARF/tree/master/data/THUman
 
 ## Training
-- Write config file like `NARF/configs/[your_config.yml]`. Do not change `default.yml`
+- Write config file like `NARF/configs/THUman/results_wxl_20181008_wlz_3_M/NARF_D.yml`. Do not change `default.yml`
     - `out_root`: root directory to save models
     - `out`: experiment name
     - `data_root`: directory the `dataset` is in
