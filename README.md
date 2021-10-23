@@ -66,7 +66,11 @@ pip install tensorboardx pyyaml opencv-python pandas ninja easydict tqdm scipy s
 ```
 
 ## Dataset preparation
+### THUman
 Please refer to https://github.com/nogu-atsu/NARF/tree/master/data/THUman
+
+### Your own dataset
+Coming soon.
 
 ## Training
 - Write config file like `NARF/configs/THUman/results_wxl_20181008_wlz_3_M/NARF_D.yml`. Do not change `default.yml`
@@ -112,7 +116,7 @@ https://smpl.is.tue.mpg.de/
 
 # BibTex
 ```
-@inproceedings{2021narf
+@inproceedings{2021narf,
   author    = {Noguchi, Atsuhiro and Sun, Xiao and Lin, Stephen and Harada, Tatsuya},
   title     = {Neural Articulated Radiance Field},
   booktitle = {International Conference on Computer Vision},
