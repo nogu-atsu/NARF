@@ -16,6 +16,7 @@ Dataset preparation code is based on https://github.com/ZhengZerong/DeepHuman
 - Download THUman dataset from https://github.com/ZhengZerong/DeepHuman/tree/master/THUmanDataset and unzip it.
     - Specify the path to `dataset_dir` in config files `configs/*.py`
 - Copy `https://github.com/ZhengZerong/DeepHuman/blob/master/TrainingDataPreparation/ObjIO.py` here.
+- Copy `https://github.com/ZhengZerong/DeepHuman/blob/master/vertices.txt` here.
 - update `data_list.txt` in `dataset` if necessary 
 - Specify the path to save the data to `output_root_dir` in config files `configs/*.py`
 - Run `python render_THUman.py --config_path configs/[dataset_name].py --num_process 20`
